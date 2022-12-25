@@ -226,6 +226,10 @@ def download_images():
         urllib.request.urlretrieve(
             'https://upload.wikimedia.org/wikipedia/commons/2/2a/Horizontal_hemiola.png',
             'horizontal.png')
+    if not os.path.exists('diagonal.png'):
+        urllib.request.urlretrieve(
+            'https://upload.wikimedia.org/wikipedia/commons/5/5d/Linear_Graph.png',
+            'diagonal.png')
 
 def main():
     tmpdir = f"/tmp/kitty-test-unicode-placeholders-{os.getuid()}"
@@ -238,6 +242,14 @@ def main():
     upload('transparency.png', 2)
     upload('column.png', 3)
     upload('horizontal.png', 4)
+    upload('diagonal.png', 5)
+
+    # One image (watch out for artifacts).
+    grid = Grid(40, 100)
+    place(5, None, 40, 100)
+    grid.box(5, None, y=0, x=0, r=0, c=0, h=40, w=100)
+    grid.draw()
+    print()
 
     # Show two images side-by-side.
     grid = Grid(5, 20)
@@ -253,6 +265,7 @@ def main():
         show_multiple_sizes(i)
         print()
 
+    # Overlapping images.
     place(1, 100, 8, 16)
     place(2, 100, 4, 8)
     for less_diacritics in [False, True]:
@@ -265,6 +278,46 @@ def main():
         grid.box(2, 100, y=4, x=8, r=0, c=0, h=4, w=8, bg=6)
         grid.draw(less_diacritics)
         print()
+
+    # Show an hourglass.
+    place(1, 101, 10, 20)
+    place(2, 101, 10, 20)
+    place(3, 101, 10, 20)
+    place(4, 101, 10, 20)
+    grid = Grid(10, 20)
+    for i in range(10):
+        grid.box(1, 101, y=i, x=0, r=i, c=0, h=1, w=20, bg=1)
+        grid.box(3, 101, y=i, x=i*2+2, r=i, c=i*2+2, h=1, w=20-i*2-2, bg=3)
+        grid.box(4, 101, y=i, x=20-i*2, r=i, c=20-i*2, h=1, w=i*2, bg=4)
+        if i >= 5:
+            grid.box(2, 101, y=i, x=20-i*2, r=i, c=20-i*2, h=1, w=i*4-18, bg=2)
+    grid.draw()
+    print()
+
+    place(3, 102, 20, 40)
+    place(4, 102, 20, 40)
+
+    # Vertical stripes.
+    grid = Grid(20, 40)
+    for i in range(40):
+        if i % 2 == 0:
+            grid.box(3, 102, y=0, x=i, r=0, c=i, h=20, w=1, bg=20)
+        else:
+            grid.box(4, 102, y=0, x=i, r=0, c=i, h=20, w=1, bg=30)
+    grid.box(3, 102, y=0, x=0, r=0, c=0, h=2, w=40, bg=20)
+    grid.draw()
+    print()
+
+    # Horizontal stripes.
+    grid = Grid(20, 40)
+    for i in range(20):
+        if i % 2 == 0:
+            grid.box(3, 102, y=i, x=0, r=i, c=0, h=1, w=40, bg=22)
+        else:
+            grid.box(4, 102, y=i, x=0, r=i, c=0, h=1, w=40, bg=33)
+    grid.box(4, 102, y=0, x=0, r=0, c=0, h=20, w=4, bg=33)
+    grid.draw()
+
 
 if __name__ == '__main__':
     main()

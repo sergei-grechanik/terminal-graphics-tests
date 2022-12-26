@@ -139,7 +139,7 @@ class Line:
         if self.image_id is not None:
             sys.stdout.write(f"\033[38;5;{self.image_id}m")
         if self.place_id is not None:
-            sys.stdout.write(f"\033[58;5;{self.place_id}m")
+            sys.stdout.write(f"\033[58;2;0;0;{self.place_id}m")
         if self.bg is not None:
             sys.stdout.write(f"\033[48;5;{self.bg}m")
 
